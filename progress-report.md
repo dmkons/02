@@ -1,5 +1,4 @@
-#Progress Report - Exercise 2 TDT4255, 
-NTNU Autumn 2013
+#Progress Report - Exercise 2 TDT4255, NTNU Autumn 2013
 
 ##What we have done so far
 We started working on the assignment on the 16th of October 2013, but have not spent much time on it yet.
