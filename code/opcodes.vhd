@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 
 package opcodes is
 constant OPCODE_R_ALL : std_logic_vector(5 downto 0):= "000000";
---constant OPCODE_ADDI : std_logic_vector(5 downto 0) := "001000";
+constant OPCODE_ADDI : std_logic_vector(5 downto 0) := "001000";
 --constant OPCODE_ADDIU : std_logic_vector(5 downto 0) := "001001";
 --constant OPCODE_ANDI : std_logic_vector(5 downto 0) := "001100";
 constant OPCODE_BEQ : std_logic_vector(5 downto 0) := "000100";
@@ -16,7 +16,7 @@ constant OPCODE_BEQ : std_logic_vector(5 downto 0) := "000100";
 --constant OPCODE_LBU : std_logic_vector(5 downto 0) := "100100";
 --constant OPCODE_LH : std_logic_vector(5 downto 0) := "100001";
 --constant OPCODE_LHU : std_logic_vector(5 downto 0) := "100101";
-constant OPCODE_LUI : std_logic_vector(5 downto 0) := "001111";
+--constant OPCODE_LUI : std_logic_vector(5 downto 0) := "001111";
 constant OPCODE_LW : std_logic_vector(5 downto 0) := "100011";
 --constant OPCODE_ORI : std_logic_vector(5 downto 0) := "001101";
 --constant OPCODE_SB : std_logic_vector(5 downto 0) := "101000";
