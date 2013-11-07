@@ -51,5 +51,25 @@ package MIPS_CONSTANT_PKG is
   -- NEW!
 	type BRANCH_TYPE is (COND_BRANCH, JUMP, NO_BRANCH);
   type ALU_OP      is (ALUOP_LOAD_STORE, ALUOP_BRANCH, ALUOP_FUNC, ALUOP_LDI);
+
+  type ex_control_signals is
+  record
+    alu_source : std_logic;
+    alu_function : std_logic_vector(5 downto 0);
+    register_destination : std_logic;
+  end record;
+
+  type mem_control_signals is
+  record
+    branch : std_logic; 
+    memory_write : std_logic;
+    memory_read : std_logic;
+  end record;
+
+  type wb_control_signals is
+  record
+    memory_to_register : std_logic;
+    register_write : std_logic;
+  end record;
 	
 end MIPS_CONSTANT_PKG;
