@@ -6,17 +6,52 @@ use work.mips_constant_pkg.all;
 entity MEM_WB is
     generic(DMEM_DATA_BUS : natural := DDATA_BUS; PC_SIZE : natural := MEM_ADDR_COUNT);
     port(
-        data_memory_in : in numeric_std(PC_SIZE-1 downto 0);
+        clk : in std_logic;
+        reset : in std_logic;
+        halt : in std_logic;
+
+        data_memory_in : in std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         register_destination_in : in std_logic_vector(4 downto 0);
         
-        data_memory_out : out numeric_std(PC_SIZE-1 downto 0);
+        data_memory_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        register_destination_out : out std_logic_vector(4 downto 0);
+        register_destination_out : out std_logic_vector(4 downto 0)
     );
 end MEM_WB;
 
 
 architecture behavioral of MEM_WB is
 begin
-end Behavioral;
+
+    data_memory_register : entity work.flip_flop
+    generic map(N => DDATA_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => data_memory_in,
+        data_out => data_memory_out
+    );
+
+    alu_result_register : entity work.flip_flop
+    generic map(N => DDATA_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => alu_result_in,
+        data_out => alu_result_out
+    );
+
+    register_destination_register : entity work.flip_flop
+    generic map(N => RADDR_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => register_destination_in,
+        data_out => register_destination_out
+    );
+
+end behavioral;
