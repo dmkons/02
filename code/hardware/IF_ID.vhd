@@ -25,30 +25,6 @@ end IF_ID;
 architecture behavioral of IF_ID is
 begin
 
-    main_control_unit: entity work.flip_flop
-    generic map(
-                    OPCODE_SIZE => OPCODE_SIZE,
-                    FUNCTION_SIZE => FUNCTION_SIZE
-                )
-    port map (
-                 reset => reset,
-                 clock => CLK,
-                 instruction_opcode => instruction_opcode,
-                 instruction_func => instruction_func,
-                 processor_enable => processor_enable,
-
-                 register_destination => register_destination,
-                 memory_to_register => memory_to_register,
-                 alu_source => alu_source,
-                 alu_func => alu_func,
-                 register_write => register_write,
-                 jump => jump,
-                 shift_swap => shift_swap,
-                 pc_enable => pc_enable,
-                 memory_write => memory_write
-
-             );
-
 
 
 end behavioral;
