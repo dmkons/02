@@ -14,12 +14,16 @@ entity EX_MEM is
         instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
         instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
         rt_data_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
+        mem_control_signals_in : in mem_control_signals;
+        wb_control_signals_in : in wb_control_signals;
         
         pc_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
         rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0)
+        mem_control_signals_out : out mem_control_signals;
+        wb_control_signals_out : out wb_control_signals;
     );
 end EX_MEM;
 
@@ -74,6 +78,26 @@ begin
         enable => halt,
         data_in => rt_data_in,
         data_out => rt_data_out
+    );
+
+    mem_control_signals_register: entity work.flip_flop
+    generic map(N => DDATA_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => mem_control_signals_in,
+        data_out => mem_control_signals_out
+    );
+
+    wb_control_signals_register: entity work.flip_flop
+    generic map(N => DDATA_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => wb_control_signals_in,
+        data_out => wb_control_signals_out
     );
 
 end behavioral;

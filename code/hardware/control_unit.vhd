@@ -1,6 +1,7 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
 use work.opcodes.all;
+use work.mips_constant_pkg.all;
 
 entity control_unit is
     generic(
@@ -13,14 +14,9 @@ entity control_unit is
         processor_enable : in std_logic;
         instruction_opcode : in std_logic_vector(OPCODE_SIZE-1 downto 0);
         instruction_function : in std_logic_vector(FUNCTION_SIZE-1 downto 0);
-        alu_function : out std_logic_vector (5 downto 0);
-        alu_source : out  std_logic;
-        register_destination : out  std_logic;
-        branch : out  std_logic;
-        memory_read : out  std_logic;
-        memory_write : out  std_logic;
-        memory_to_register : out  std_logic;
-        register_write : out  std_logic;
+        ex_control_signals : out ex_control_signals;
+        mem_control_signals : out mem_control_signals;
+        wb_control_signals : out wb_control_signals;
         jump : out std_logic
     );
 end control_unit;
@@ -32,44 +28,44 @@ begin
     process (clk, reset, processor_enable, instruction_opcode)
     begin
         -- Set defauts
-        alu_function <= FUNCTION_PASSTHROUGH;
-        alu_source <= '0';
-        register_destination <= '0';
-        branch <= '0';
-        memory_read <= '0';
-        memory_write <= '0';
-        memory_to_register <= '0';
-        register_write <= '0';
+        ex_control_signals.alu_function <= FUNCTION_PASSTHROUGH;
+        ex_control_signals.alu_source <= '0';
+        ex_control_signals.register_destination <= '0';
+        mem_control_signals.branch <= '0';
+        mem_control_signals.memory_read <= '0';
+        mem_control_signals.memory_write <= '0';
+        wb_control_signals.memory_to_register <= '0';
+        wb_control_signals.register_write <= '0';
         
         case instruction_opcode is
             when OPCODE_R_ALL =>
-                alu_function <= instruction_function;
-                register_destination <= '1';
-                register_write <= '1';
+                ex_control_signals.alu_function <= instruction_function;
+                ex_control_signals.register_destination <= '1';
+                wb_control_signals.register_write <= '1';
                 
             when OPCODE_BEQ =>
-                alu_function <= FUNCTION_SUB;
-                branch <= '1';
+                ex_control_signals.alu_function <= FUNCTION_SUB;
+                mem_control_signals.branch <= '1';
             
             when OPCODE_LW =>
-                alu_function <= FUNCTION_ADD;
-                alu_source <= '1';
-                memory_read <= '1';
-                memory_to_register <= '1';
-                register_write <= '1';
+                ex_control_signals.alu_function <= FUNCTION_ADD;
+                ex_control_signals.alu_source <= '1';
+                mem_control_signals.memory_read <= '1';
+                wb_control_signals.memory_to_register <= '1';
+                wb_control_signals.register_write <= '1';
         
             when OPCODE_SW =>
-                alu_function <= FUNCTION_ADD;
-                alu_source <= '1';
-                memory_write <= '1';
+                ex_control_signals.alu_function <= FUNCTION_ADD;
+                ex_control_signals.alu_source <= '1';
+                mem_control_signals.memory_write <= '1';
                 
             when OPCODE_J =>
                 jump <= '1';
                 
             when OPCODE_ADDI =>
-                alu_source <= '1';
-                alu_function <= FUNCTION_ADD;
-                register_write <= '1';
+                ex_control_signals.alu_source <= '1';
+                ex_control_signals.alu_function <= FUNCTION_ADD;
+                wb_control_signals.register_write <= '1';
 
             when others =>
         end case;
