@@ -11,16 +11,16 @@ entity EX_MEM is
         halt : in std_logic;
         pc_in : in std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
-        instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
+        alu_zero_in : in std_logic;
+        register_destination_in : in std_logic_vector(4 downto 0);
         rt_data_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         mem_control_signals_in : in mem_control_signals;
         wb_control_signals_in : in wb_control_signals;
         
         pc_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
-        instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
+        alu_zero_out : out std_logic;
+        register_destination_out : in std_logic_vector(4 downto 0);
         rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0)
         mem_control_signals_out : out mem_control_signals;
         wb_control_signals_out : out wb_control_signals;
@@ -50,24 +50,14 @@ begin
         data_out => alu_result_out
     );
 
-    instruction_20_downto_16_register : entity work.flip_flop
+    register_destination_register: entity work.flip_flop
     generic map(N => 5)
     port map(
         clk => clk,
         reset => reset,
         enable => halt,
-        data_in => instruction_20_downto_16_in,
-        data_out => instruction_20_downto_16_out
-    );
-
-    instruction_15_downto_11_register : entity work.flip_flop
-    generic map(N => 5)
-    port map(
-        clk => clk,
-        reset => reset,
-        enable => halt,
-        data_in => instruction_15_downto_11_in,
-        data_out => instruction_15_downto_11_out
+        data_in => register_destination_in,
+        data_out => register_destination_out
     );
 
     rt_data_register : entity work.flip_flop
@@ -98,6 +88,16 @@ begin
         enable => halt,
         data_in => wb_control_signals_in,
         data_out => wb_control_signals_out
+    );
+
+    alu_zero_register: entity work.flip_flop
+    generic map(N => 1)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => alu_zero_in,
+        data_out => alu_zero_out
     );
 
 end behavioral;
