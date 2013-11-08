@@ -5,9 +5,6 @@ use work.opcodes.all;
 
 entity mem_stage is
     port(
-        clk : in std_logic;
-        reset : in std_logic;
-        processor_enable : in std_logic;
         alu_zero_in : in std_logic;
         branch_in : in std_logic;
 

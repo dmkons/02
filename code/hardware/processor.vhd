@@ -170,9 +170,6 @@ begin
 
     ex_stage: entity work.ex_stage
     port map(
-        clk => clk,
-        reset => reset,
-        processor_enable => processor_enable,
         pc_in => pc_from_id_ex,
         immediate_in => immediate_from_id_ex,
         instruction_20_downto_16_in => instruction_20_downto_16_from_id_ex,
@@ -220,9 +217,6 @@ begin
 
     mem_stage: entity work.mem_stage
     port map(
-        clk => clk,
-        reset => reset,
-        processor_enable => processor_enable,
         alu_zero_in => alu_zero_from_ex_mem,
         branch_in => mem_control_signals_from_ex_mem.branch,
 
@@ -253,9 +247,6 @@ begin
 
     wb_stage: entity work.wb_stage
     port map(
-        clk => clk,
-        reset => reset,
-        processor_enable => processor_enable,
         data_memory_in => data_memory_from_mem_wb,
         alu_result_in => alu_result_from_mem_wb,
         memory_to_register_in => wb_control_signals_from_mem_wb.memory_to_register,

@@ -5,10 +5,6 @@ use work.opcodes.all;
 
 entity wb_stage is
     port(
-        clk : in std_logic;
-        reset : in std_logic;
-        processor_enable : in std_logic;
-
         data_memory_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         memory_to_register_in : in std_logic;

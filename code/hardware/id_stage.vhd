@@ -31,9 +31,6 @@ begin
 
     control_unit: entity work.control_unit
     port map(
-        clk => clk,
-        reset => reset,
-        processor_enable => processor_enable,
         instruction_opcode => get_opcode(instruction_in),
         instruction_function => get_function(instruction_in),
 
