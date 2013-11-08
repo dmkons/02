@@ -50,4 +50,11 @@ begin
         pc_source_out <= alu_zero_in and mem_control_signals_in.branch;
     end process;
 
+
+    process (alu_result_in, register_destination_in)
+    begin
+        alu_result_out <= alu_result_in;
+        register_destination_out <= register_destination_in;
+    end process;
+
 end behavioural;
