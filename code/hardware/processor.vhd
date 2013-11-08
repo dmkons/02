@@ -72,7 +72,6 @@ architecture behavioral of processor is
     signal alu_result_from_ex_mem : std_logic_vector(DDATA_BUS-1 downto 0);
     signal alu_zero_from_ex_mem : std_logic;
     signal register_destination_from_ex_mem : std_logic_vector(4 downto 0);
-    signal rt_data_from_ex_mem : std_logic_vector(DDATA_BUS-1 downto 0);
     signal mem_control_signals_from_ex_mem : mem_control_signals;
     signal wb_control_signals_from_ex_mem : wb_control_signals;
 
@@ -102,8 +101,7 @@ begin
         pc_source_in => pc_source_from_mem_stage,
         alu_result_in => alu_result_from_ex_mem,
 
-        pc_out => pc_from_if_stage,
-        instruction_out => instruction_from_if_stage
+        pc_out => pc_from_if_stage
     );
 
     if_id: entity work.if_id
@@ -112,7 +110,7 @@ begin
         reset => reset,
         halt => processor_enable,
         pc_in => pc_from_if_stage,
-        instruction_in => instruction_from_if_stage,
+        instruction_in => imem_data_in,
 
         pc_out => pc_from_if_id,
         instruction_out => instruction_from_if_id
@@ -176,13 +174,10 @@ begin
         rs_data_in => rs_data_from_id_ex,
         rt_data_in => rt_data_from_id_ex,
         ex_control_signals_in => ex_control_signals_from_id_ex,
-        mem_control_signals_in => mem_control_signals_from_id_ex,
-        wb_control_signals_in => wb_control_signals_from_id_ex,
 
         pc_out => pc_from_ex_stage,
         alu_result_out => alu_result_from_ex_stage,
         alu_zero_out => alu_zero_from_ex_stage,
-        instruction_20_downto_16_out => instruction_20_downto_16_from_ex_stage,
         register_destination_out => register_destination_from_ex_stage,
         rt_data_out => rt_data_from_ex_stage
     );
@@ -204,7 +199,7 @@ begin
         alu_result_out => alu_result_from_ex_mem,
         alu_zero_out => alu_zero_from_ex_mem,
         register_destination_out => register_destination_from_ex_mem,
-        rt_data_out => rt_data_from_ex_mem,
+        rt_data_out => dmem_data_out,
         mem_control_signals_out => mem_control_signals_from_ex_mem,
         wb_control_signals_out => wb_control_signals_from_ex_mem
     );
@@ -215,14 +210,11 @@ begin
         reset => reset,
         processor_enable => processor_enable,
 
-        pc_in => pc_from_ex_mem,
         alu_result_in => alu_result_from_ex_mem,
         alu_zero_in => alu_zero_from_ex_mem,
-        rt_data_in => rt_data_from_ex_mem,
-        mem_control_signals_in => mem_control_signals_from_ex_mem,
-        wb_control_signals_in => wb_control_signals_from_ex_mem,
+        branch_in => mem_control_signals_from_ex_mem.branch,
 
-        data_memory_out => data_memory_from_mem_stage,
+        alu_result_out => dmem_address,
         pc_source_out => pc_source_from_mem_stage
     );
 
@@ -231,7 +223,7 @@ begin
         clk => clk,
         reset => reset,
         halt => processor_enable,
-        data_memory_in => data_memory_from_mem_stage,
+        data_memory_in => dmem_data_in,
         alu_result_in => alu_result_from_ex_mem,
         register_destination_in => register_destination_from_ex_mem,
         wb_control_signals_in => wb_control_signals_from_ex_mem,
@@ -249,7 +241,7 @@ begin
         processor_enable => processor_enable,
         data_memory_in => data_memory_from_mem_wb,
         alu_result_in => alu_result_from_mem_wb,
-        wb_control_signals_in => wb_control_signals_from_mem_wb,
+        memory_to_register_in => wb_control_signals_from_mem_wb.memory_to_register,
 
         write_data_out => write_data_from_wb_stage
     );

@@ -13,8 +13,7 @@ entity if_stage is
         pc_source_in : in std_logic;
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
 
-        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
-        instruction_out : out std_logic_vector(IDATA_BUS-1 downto 0)
+        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0)
     );
 end if_stage;
 
@@ -25,20 +24,6 @@ architecture behavioural of if_stage is
     signal pc_incremented : std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
 begin
 
-    instruction_memory: entity work.memory
-	generic map(
-        N => IADDR_BUS,
-        M => MEM_ADDR_COUNT
-    )port map(
-		clk => clk,
-		reset => reset,
-		w_addr => (others => '0'),
-		write_data => ZERO32b,
-		memwrite => '0',
-		addr => "000000000000000000000000" & new_pc_out,
-
-		read_data => instruction_out
-	);
 
     pc: entity work.flip_flop
     generic map(
@@ -64,6 +49,7 @@ begin
     process (new_pc_out)
     begin
         pc_incremented <= std_logic_vector(unsigned(new_pc_out) + "1");
+        pc_out <= new_pc_out;
     end process;
 
 end behavioural;

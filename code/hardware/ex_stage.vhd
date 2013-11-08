@@ -16,17 +16,12 @@ entity ex_stage is
         rs_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         rt_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         ex_control_signals_in : in ex_control_signals;
-        mem_control_signals_in : in mem_control_signals;
-        wb_control_signals_in : in wb_control_signals;
 
         pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_out : out std_logic;
-        instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         register_destination_out : out std_logic_vector(4 downto 0);
-        rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
-        mem_control_signals_out : out mem_control_signals;
-        wb_control_signals_out : out wb_control_signals
+        rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0)
     );
 end ex_stage;
 
