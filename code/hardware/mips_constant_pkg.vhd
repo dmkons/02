@@ -63,7 +63,6 @@ package MIPS_CONSTANT_PKG is
   record
     branch : std_logic; 
     memory_write : std_logic;
-    memory_read : std_logic;
   end record;
 
   type wb_control_signals is

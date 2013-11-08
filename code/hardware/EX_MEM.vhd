@@ -11,6 +11,7 @@ entity EX_MEM is
         halt : in std_logic;
         pc_in : in std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
+        alu_zero_in : in std_logic;
         instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
         instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
         rt_data_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
@@ -19,6 +20,7 @@ entity EX_MEM is
         
         pc_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
+        alu_zero_out : out std_logic;
         instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
         rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0)
@@ -98,6 +100,16 @@ begin
         enable => halt,
         data_in => wb_control_signals_in,
         data_out => wb_control_signals_out
+    );
+
+    alu_zero_register: entity work.flip_flop
+    generic map(N => 1)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => alu_zero_in,
+        data_out => alu_zero_out
     );
 
 end behavioral;
