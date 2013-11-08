@@ -32,10 +32,10 @@ begin
     )port map(
 		clk => clk,
 		reset => reset,
-		w_addr => "00000000",
+		w_addr => (others => '0'),
 		write_data => ZERO32b,
 		memwrite => '0',
-		addr => new_pc_out,
+		addr => "000000000000000000000000" & new_pc_out,
 
 		read_data => instruction_out
 	);

@@ -42,8 +42,10 @@ begin
 
 
     process (pc_in, immediate_in)
+        variable incremented_pc_out : std_logic_vector(DDATA_BUS-1 downto 0);
     begin
-        pc_out <= std_logic_vector(unsigned(immediate_in) + unsigned(pc_in));
+        incremented_pc_out := std_logic_vector(unsigned(immediate_in) + unsigned(pc_in));
+        pc_out <= incremented_pc_out(MEM_ADDR_COUNT-1 downto 0);
     end process;
 
 

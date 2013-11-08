@@ -20,7 +20,7 @@ end wb_stage;
 architecture behavioural of wb_stage is
 begin
 
-    process (data_memory_in, alu_result_in)
+    process (data_memory_in, alu_result_in, wb_control_signals_in)
     begin
         if wb_control_signals_in.memory_to_register = '1' then
             write_data_out <= data_memory_in;    

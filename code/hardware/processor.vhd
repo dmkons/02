@@ -64,6 +64,7 @@ architecture behavioral of processor is
     signal instruction_20_downto_16_from_ex_stage : std_logic_vector(20 downto 16);
     signal register_destination_from_ex_stage : std_logic_vector(4 downto 0);
     signal rt_data_from_ex_stage : std_logic_vector(DDATA_BUS-1 downto 0);
+    
 
 
     -- signals from ex_mem
@@ -180,6 +181,7 @@ begin
 
         pc_out => pc_from_ex_stage,
         alu_result_out => alu_result_from_ex_stage,
+        alu_zero_out => alu_zero_from_ex_stage,
         instruction_20_downto_16_out => instruction_20_downto_16_from_ex_stage,
         register_destination_out => register_destination_from_ex_stage,
         rt_data_out => rt_data_from_ex_stage
