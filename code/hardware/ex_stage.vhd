@@ -20,8 +20,7 @@ entity ex_stage is
         pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_out : out std_logic;
-        register_destination_out : out std_logic_vector(4 downto 0);
-        rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0)
+        register_destination_out : out std_logic_vector(4 downto 0)
     );
 end ex_stage;
 
@@ -35,6 +34,7 @@ begin
     port map(
         x_in => signed(rs_data_in),
         y_in => signed(alu_y_in),
+        function_in => ex_control_signals_in.alu_function,
 
         result_out => alu_result_signed_out,
         zero_out => alu_zero_out

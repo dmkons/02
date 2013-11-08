@@ -20,6 +20,24 @@ end IF_ID;
 architecture behavioral of IF_ID is
 begin
 
+    pc_register: entity work.flip_flop
+    generic map(N => MEM_ADDR_COUNT)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => pc_in,
+        data_out => pc_out
+    );
 
+    instruction_register: entity work.flip_flop
+    generic map(N => DDATA_BUS)
+    port map(
+        clk => clk,
+        reset => reset,
+        enable => halt,
+        data_in => instruction_in,
+        data_out => instruction_out
+    );
 
 end behavioral;
