@@ -10,7 +10,7 @@ entity alu is
             y_in : in signed(DDATA_BUS-1 downto 0);
             function_in : in std_logic_vector(FUNCTION_SIZE-1 downto 0);
 
-            result_out : out signed(DDATA_BUS-1 downto 0);
+            result_out  : out signed(DDATA_BUS-1 downto 0);
             zero_out : out std_logic
         );
 end alu;
@@ -20,25 +20,25 @@ begin
 
     case func is
         when FUNCTION_ADD =>
-            r <= x + y;
+            result_out <= x + y;
 
         when FUNCTION_AND =>
-            r <= x and y;
+            result_out <= x and y;
 
         when FUNCTION_OR =>
-            r <= x or y;
+            result_out <= x oresult_out y;
 
         when FUNCTION_SLT =>
             if x < y then
-                r <= "00000000000000000000000000000001";
+                result_out <= "00000000000000000000000000000001";
             else
-                r <= "00000000000000000000000000000000";
+                result_out <= "00000000000000000000000000000000";
             end if;
 
 
         when FUNCTION_SUB =>
             r_readable := x - y;
-            r <= r_readable;
+            result_out <= r_readable;
             if (r_readable="00000000000000000000000000000000") then
                 flags.zero <= '1';
             else
@@ -46,7 +46,7 @@ begin
             end if;
 
         when FUNCTION_PASSTHROUGH =>
-            r <= x;
+            result_out <= x;
 
         when others =>
             null;
