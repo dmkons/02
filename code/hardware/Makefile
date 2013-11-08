@@ -15,3 +15,4 @@ all:
 	ghdl -a ID_EX.vhd
 	ghdl -a EX_MEM.vhd
 	ghdl -a MEM_WB.vhd
+	ghdl -a processor.vhd

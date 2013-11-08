@@ -9,12 +9,11 @@ entity id_stage is
         clk : in std_logic;
         reset : in std_logic;
         processor_enable : in std_logic;
-        pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         instruction_in : in std_logic_vector(IDATA_BUS-1 downto 0);
-        register_write : in std_logic;
-        write_data : in std_logic_vector(DDATA_BUS-1 downto 0);
+        register_write_in : in std_logic;
+        write_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
+        register_destination_in : in std_logic_vector(RADDR_BUS-1 downto 0);
 
-        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         immediate_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
@@ -48,11 +47,11 @@ begin
     port map(
         clk => clk,
         reset => reset,
-        rw => register_write,
+        rw => register_write_in,
         rs_addr => get_rs(instruction_in),
         rt_addr => get_rt(instruction_in),
-        rd_addr => get_rd(instruction_in),
-        write_data => write_data,
+        rd_addr => register_destination_in,
+        write_data => write_data_in,
 
         rs => rs_data_out,
         rt => rs_data_out
@@ -69,7 +68,6 @@ begin
 
     process (instruction_in)
     begin
-        pc_out <= pc_in;
         instruction_20_downto_16_out <= instruction_in(20 downto 16);
         instruction_15_downto_11_out <= instruction_in(15 downto 11);
     end process;
