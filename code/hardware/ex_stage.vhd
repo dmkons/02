@@ -21,6 +21,7 @@ entity ex_stage is
 
         pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
+        alu_zero_out : out std_logic;
         instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         register_destination_out : out std_logic_vector(4 downto 0);
         rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);

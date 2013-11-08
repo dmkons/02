@@ -28,10 +28,10 @@ entity ID_EX is
         instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
         instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
         rs_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0)
+        rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         ex_control_signals_out : out ex_control_signals;
         mem_control_signals_out : out mem_control_signals;
-        wb_control_signals_out : out wb_control_signals;
+        wb_control_signals_out : out wb_control_signals
     );
 end ID_EX;
 
@@ -98,8 +98,7 @@ begin
         data_out => rt_data_out
     );
 
-    ex_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    ex_control_signals_register: entity work.flip_flop_ex_control_signals
     port map(
         clk => clk,
         reset => reset,
@@ -108,8 +107,7 @@ begin
         data_out => ex_control_signals_out
     );
 
-    mem_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    mem_control_signals_register: entity work.flip_flop_mem_control_signals
     port map(
         clk => clk,
         reset => reset,
@@ -118,8 +116,7 @@ begin
         data_out => mem_control_signals_out
     );
 
-    wb_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    wb_control_signals_register: entity work.flip_flop_wb_control_signals
     port map(
         clk => clk,
         reset => reset,

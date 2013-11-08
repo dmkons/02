@@ -12,15 +12,11 @@ entity mem_stage is
         pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_in : in std_logic;
-        instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
-        instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
         rt_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         mem_control_signals_in : in mem_control_signals;
         wb_control_signals_in : in wb_control_signals;
 
-        data_memory_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
-        alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
-        register_destination_out : out std_logic_vector(4 downto 0);
+        data_memory_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         wb_control_signals_out : out wb_control_signals;
         pc_source_out : out std_logic
     );
@@ -48,13 +44,6 @@ begin
     process (alu_zero_in, mem_control_signals_in.branch)
     begin
         pc_source_out <= alu_zero_in and mem_control_signals_in.branch;
-    end process;
-
-
-    process (alu_result_in, register_destination_in)
-    begin
-        alu_result_out <= alu_result_in;
-        register_destination_out <= register_destination_in;
     end process;
 
 end behavioural;
