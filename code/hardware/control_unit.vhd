@@ -21,7 +21,7 @@ end control_unit;
 architecture behavioral of control_unit is
 begin
 
-    process (clk, reset, processor_enable, instruction_opcode)
+    process (clk, reset, processor_enable, instruction_opcode, instruction_function)
     begin
         -- Set defauts
         ex_control_signals.alu_function <= FUNCTION_PASSTHROUGH;

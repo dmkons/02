@@ -9,41 +9,26 @@ entity mem_stage is
         reset : in std_logic;
         processor_enable : in std_logic;
 
-        pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_in : in std_logic;
-        rt_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
-        mem_control_signals_in : in mem_control_signals;
-        wb_control_signals_in : in wb_control_signals;
+        branch_in : in std_logic;
 
-        data_memory_out : out std_logic_vector(DDATA_BUS-1 downto 0);
-        wb_control_signals_out : out wb_control_signals;
+        alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         pc_source_out : out std_logic
     );
 end mem_stage;
 
 architecture behavioural of mem_stage is
 begin
-
-    data_memory: entity work.memory
-	generic map(
-        N => DDATA_BUS,
-        M => MEM_ADDR_COUNT
-    )port map(
-		clk => clk,
-		reset => reset,
-		w_addr => alu_result_in,
-		write_data => rt_data_in,
-		memwrite => mem_control_signals_in.memory_write,
-		addr => alu_result_in,
-
-		read_data => data_memory_out
-    );
-
     
-    process (alu_zero_in, mem_control_signals_in.branch)
+    process (alu_zero_in, branch_in)
     begin
-        pc_source_out <= alu_zero_in and mem_control_signals_in.branch;
+        pc_source_out <= alu_zero_in and branch_in;
+    end process;
+    
+    process (alu_result_in)
+    begin
+        alu_result_out <= alu_result_in;
     end process;
 
 end behavioural;

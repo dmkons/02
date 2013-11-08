@@ -54,7 +54,7 @@ begin
         write_data => write_data_in,
 
         rs => rs_data_out,
-        rt => rs_data_out
+        rt => rt_data_out
     );
 
 

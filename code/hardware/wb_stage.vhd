@@ -11,7 +11,7 @@ entity wb_stage is
 
         data_memory_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
-        wb_control_signals_in : in wb_control_signals;
+        memory_to_register_in : in std_logic;
 
         write_data_out : out std_logic_vector(DDATA_BUS-1 downto 0)
     );
@@ -20,9 +20,9 @@ end wb_stage;
 architecture behavioural of wb_stage is
 begin
 
-    process (data_memory_in, alu_result_in)
+    process (data_memory_in, alu_result_in, memory_to_register_in)
     begin
-        if wb_control_signals_in.memory_to_register = '1' then
+        if memory_to_register_in = '1' then
             write_data_out <= data_memory_in;    
         else
             write_data_out <= alu_result_in;
