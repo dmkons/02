@@ -35,6 +35,7 @@ begin
     port map(
         x_in => signed(rs_data_in),
         y_in => signed(alu_y_in),
+        function_in => ex_control_signals_in.alu_function,
 
         result_out => alu_result_signed_out,
         zero_out => alu_zero_out
