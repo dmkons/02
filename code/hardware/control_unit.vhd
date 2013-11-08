@@ -5,9 +5,6 @@ use work.mips_constant_pkg.all;
 
 entity control_unit is
     port(
-        clk : in std_logic;
-        reset : in std_logic;
-        processor_enable : in std_logic;
         instruction_opcode : in std_logic_vector(OPCODE_SIZE-1 downto 0);
         instruction_function : in std_logic_vector(FUNCTION_SIZE-1 downto 0);
         ex_control_signals : out ex_control_signals;
@@ -21,7 +18,7 @@ end control_unit;
 architecture behavioral of control_unit is
 begin
 
-    process (clk, reset, processor_enable, instruction_opcode, instruction_function)
+    process (instruction_opcode, instruction_function)
     begin
         -- Set defauts
         ex_control_signals.alu_function <= FUNCTION_PASSTHROUGH;

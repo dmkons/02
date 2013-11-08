@@ -6,9 +6,6 @@ use work.opcodes.all;
 
 entity ex_stage is
     port(
-        clk : in std_logic;
-        reset : in std_logic;
-        processor_enable : in std_logic;
         pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         immediate_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
