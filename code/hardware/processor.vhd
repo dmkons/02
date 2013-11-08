@@ -64,8 +64,6 @@ architecture behavioral of processor is
     signal instruction_20_downto_16_from_ex_stage : std_logic_vector(20 downto 16);
     signal register_destination_from_ex_stage : std_logic_vector(4 downto 0);
     signal rt_data_from_ex_stage : std_logic_vector(DDATA_BUS-1 downto 0);
-    signal mem_control_signals_from_ex_stage : mem_control_signals;
-    signal wb_control_signals_from_ex_stage : wb_control_signals;
 
 
     -- signals from ex_mem
@@ -80,7 +78,6 @@ architecture behavioral of processor is
 
     -- signals from mem_stage
     signal data_memory_from_mem_stage : std_logic_vector(DDATA_BUS-1 downto 0);
-    signal wb_control_signals_from_mem_stage : wb_control_signals;
     signal pc_source_from_mem_stage : std_logic;
 
 
@@ -185,9 +182,7 @@ begin
         alu_result_out => alu_result_from_ex_stage,
         instruction_20_downto_16_out => instruction_20_downto_16_from_ex_stage,
         register_destination_out => register_destination_from_ex_stage,
-        rt_data_out => rt_data_from_ex_stage,
-        mem_control_signals_out => mem_control_signals_from_ex_stage,
-        wb_control_signals_out => wb_control_signals_from_ex_mem 
+        rt_data_out => rt_data_from_ex_stage
     );
 
     ex_mem: entity work.ex_mem
@@ -200,8 +195,8 @@ begin
         alu_zero_in => alu_zero_from_ex_stage,
         register_destination_in => register_destination_from_ex_stage,
         rt_data_in => rt_data_from_ex_stage,
-        mem_control_signals_in => mem_control_signals_from_ex_stage,
-        wb_control_signals_in => wb_control_signals_from_ex_stage,
+        mem_control_signals_in => mem_control_signals_from_id_ex,
+        wb_control_signals_in => wb_control_signals_from_id_ex,
         
         pc_out => pc_from_ex_mem,
         alu_result_out => alu_result_from_ex_mem,
@@ -226,7 +221,6 @@ begin
         wb_control_signals_in => wb_control_signals_from_ex_mem,
 
         data_memory_out => data_memory_from_mem_stage,
-        wb_control_signals_out => wb_control_signals_from_mem_stage,
         pc_source_out => pc_source_from_mem_stage
     );
 
@@ -238,7 +232,7 @@ begin
         data_memory_in => data_memory_from_mem_stage,
         alu_result_in => alu_result_from_ex_mem,
         register_destination_in => register_destination_from_ex_mem,
-        wb_control_signals_in => wb_control_signals_from_mem_stage,
+        wb_control_signals_in => wb_control_signals_from_ex_mem,
         
         data_memory_out => data_memory_from_mem_wb,
         alu_result_out => alu_result_from_mem_wb,
