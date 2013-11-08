@@ -28,7 +28,6 @@ begin
         ex_control_signals.alu_source <= '0';
         ex_control_signals.register_destination <= '0';
         mem_control_signals.branch <= '0';
-        mem_control_signals.memory_read <= '0';
         mem_control_signals.memory_write <= '0';
         wb_control_signals.memory_to_register <= '0';
         wb_control_signals.register_write <= '0';
@@ -46,7 +45,6 @@ begin
             when OPCODE_LW =>
                 ex_control_signals.alu_function <= FUNCTION_ADD;
                 ex_control_signals.alu_source <= '1';
-                mem_control_signals.memory_read <= '1';
                 wb_control_signals.memory_to_register <= '1';
                 wb_control_signals.register_write <= '1';
         

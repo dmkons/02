@@ -17,8 +17,8 @@ entity MEM_WB is
         
         data_memory_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        register_destination_out : out std_logic_vector(4 downto 0)
-        wb_control_signals_out : out wb_control_signals;
+        register_destination_out : out std_logic_vector(4 downto 0);
+        wb_control_signals_out : out wb_control_signals
     );
 end MEM_WB;
 
@@ -56,8 +56,7 @@ begin
         data_out => register_destination_out
     );
 
-    wb_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    wb_control_signals_register: entity work.flip_flop_wb_control_signals
     port map(
         clk => clk,
         reset => reset,

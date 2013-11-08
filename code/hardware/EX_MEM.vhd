@@ -20,10 +20,10 @@ entity EX_MEM is
         pc_out : out std_logic_vector(PC_SIZE-1 downto 0);
         alu_result_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         alu_zero_out : out std_logic;
-        register_destination_out : in std_logic_vector(4 downto 0);
-        rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0)
+        register_destination_out : out std_logic_vector(4 downto 0);
+        rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         mem_control_signals_out : out mem_control_signals;
-        wb_control_signals_out : out wb_control_signals;
+        wb_control_signals_out : out wb_control_signals
     );
 end EX_MEM;
 
@@ -70,8 +70,7 @@ begin
         data_out => rt_data_out
     );
 
-    mem_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    mem_control_signals_register: entity work.flip_flop_mem_control_signals
     port map(
         clk => clk,
         reset => reset,
@@ -80,8 +79,7 @@ begin
         data_out => mem_control_signals_out
     );
 
-    wb_control_signals_register: entity work.flip_flop
-    generic map(N => DDATA_BUS)
+    wb_control_signals_register: entity work.flip_flop_wb_control_signals
     port map(
         clk => clk,
         reset => reset,
@@ -90,8 +88,7 @@ begin
         data_out => wb_control_signals_out
     );
 
-    alu_zero_register: entity work.flip_flop
-    generic map(N => 1)
+    alu_zero_register: entity work.flip_flop_std_logic
     port map(
         clk => clk,
         reset => reset,

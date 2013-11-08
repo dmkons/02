@@ -12,8 +12,7 @@ entity mem_stage is
         pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_in : in std_logic;
-        instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
-        instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
+        register_destination_in : in std_logic_vector(4 downto 0);
         rt_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         mem_control_signals_in : in mem_control_signals;
         wb_control_signals_in : in wb_control_signals;
