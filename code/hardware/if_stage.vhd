@@ -11,9 +11,10 @@ entity if_stage is
         processor_enable : in std_logic;
 
         pc_source_in : in std_logic;
-        alu_result_in : in std_logic_vector(DDATA_BUS-1 downto 0);
+        pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
 
-        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0)
+        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
+        instruction_address_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0)
     );
 end if_stage;
 
@@ -36,10 +37,10 @@ begin
         data_out => new_pc_out
     );
 
-    process (pc_source_in, pc_incremented, alu_result_in)
+    process (pc_source_in, pc_incremented, pc_in)
     begin
         if pc_source_in = '1' then
-            new_pc_in <= alu_result_in(MEM_ADDR_COUNT-1 downto 0);
+            new_pc_in <= pc_in(MEM_ADDR_COUNT-1 downto 0);
         else 
             new_pc_in <= pc_incremented;
         end if;
@@ -49,7 +50,12 @@ begin
     process (new_pc_out)
     begin
         pc_incremented <= std_logic_vector(unsigned(new_pc_out) + "1");
-        pc_out <= new_pc_out;
+        instruction_address_out <= new_pc_out;
+    end process;
+    
+    process (pc_incremented)
+    begin
+        pc_out <= pc_incremented;
     end process;
 
 end behavioural;
