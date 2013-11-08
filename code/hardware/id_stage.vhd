@@ -1,0 +1,77 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use work.mips_constant_pkg.all;
+use work.opcodes.all;
+
+entity id_stage is
+    port(
+        clk : in std_logic;
+        reset : in std_logic;
+        processor_enable : in std_logic;
+        pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
+        instruction_in : in std_logic_vector(IDATA_BUS-1 downto 0);
+        register_write : in std_logic;
+        write_data : in std_logic_vector(DDATA_BUS-1 downto 0);
+
+        pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
+        immediate_out : out std_logic_vector(DDATA_BUS-1 downto 0);
+        instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
+        instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
+        rs_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
+        rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
+        ex_control_signals_out : out  ex_control_signals;
+        mem_control_signals_out : out mem_control_signals;
+        wb_control_signals_out : out wb_control_signals
+    );
+end id_stage;
+
+
+architecture behavioural of id_stage is
+begin
+
+    control_unit: entity work.control_unit
+    port map(
+        clk => clk,
+        reset => reset,
+        processor_enable => processor_enable,
+        instruction_opcode => get_opcode(instruction_in),
+        instruction_function => get_function(instruction_in),
+
+        ex_control_signals => ex_control_signals_out,
+        mem_control_signals => mem_control_signals_out,
+        wb_control_signals => wb_control_signals_out
+    );
+
+
+    register_file: entity work.register_file
+    port map(
+        clk => clk,
+        reset => reset,
+        rw => register_write,
+        rs_addr => get_rs(instruction_in),
+        rt_addr => get_rt(instruction_in),
+        rd_addr => get_rd(instruction_in),
+        write_data => write_data,
+
+        rs => rs_data_out,
+        rt => rs_data_out
+    );
+
+
+    process (instruction_in)
+    begin
+        immediate_out <= std_logic_vector(resize(
+                             signed(instruction_in(15 downto 0)),
+                             immediate_out'length));
+    end process;
+
+
+    process (instruction_in)
+    begin
+        pc_out <= pc_in;
+        instruction_20_downto_16_out <= instruction_in(20 downto 16);
+        instruction_15_downto_11_out <= instruction_in(15 downto 11);
+    end process;
+
+end behavioural;

@@ -4,10 +4,6 @@ use work.opcodes.all;
 use work.mips_constant_pkg.all;
 
 entity control_unit is
-    generic(
-        OPCODE_SIZE: natural;
-        FUNCTION_SIZE: natural
-    );
     port(
         clk : in std_logic;
         reset : in std_logic;
