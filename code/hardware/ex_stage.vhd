@@ -27,13 +27,23 @@ end ex_stage;
 
 
 architecture behavioural of ex_stage is
-    signal alu_in : std_logic_vector(DDATA_BUS-1 downto 0);
+    signal alu_y_in : std_logic_vector(DDATA_BUS-1 downto 0);
+    signal alu_result_signed_out : signed(DDATA_BUS-1 downto 0);
 begin
 
-    -- TODO
-    -- alu: entity work.alu
-    -- port map(
-    -- );
+    alu: entity work.alu
+    port map(
+        x_in => signed(rs_data_in),
+        y_in => signed(alu_y_in),
+
+        result_out => alu_result_signed_out,
+        zero_out => alu_zero_out
+    );
+
+    process (alu_result_signed_out)
+    begin
+        alu_result_out <= std_logic_vector(alu_result_signed_out);
+    end process;
 
 
     process (pc_in, immediate_in)
@@ -47,9 +57,9 @@ begin
     process (ex_control_signals_in.alu_source, rt_data_in, immediate_in)
     begin
         if ex_control_signals_in.alu_source = '1' then 
-            alu_in <= immediate_in;
+            alu_y_in <= immediate_in;
         else
-            alu_in <= rt_data_in;
+            alu_y_in <= rt_data_in;
         end if;
     end process;
 

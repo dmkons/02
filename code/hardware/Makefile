@@ -6,6 +6,7 @@ all:
 	ghdl -a register_file.vhd
 	ghdl -a flip_flop.vhd
 	ghdl -a control_unit.vhd
+	ghdl -a alu.vhd
 	ghdl -a if_stage.vhd
 	ghdl -a id_stage.vhd
 	ghdl -a ex_stage.vhd
