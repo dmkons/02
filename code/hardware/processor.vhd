@@ -87,7 +87,9 @@ architecture behavioral of processor is
     -- signals from wb_stage
     signal write_data_from_wb_stage : std_logic_vector(DDATA_BUS-1 downto 0);
     
-
+    -- signals from pipeline flusher
+    signal flush_pipeline_from_pipeline_flusher : std_logic;
+    
 begin
 
     if_stage: entity work.if_stage
@@ -95,6 +97,7 @@ begin
         clk => clk,
         reset => reset,
         processor_enable => processor_enable,
+        flush_in => flush_pipeline_from_pipeline_flusher,
         pc_source_in => pc_source_from_mem_stage,
         pc_in => pc_from_ex_mem,
 
@@ -128,6 +131,7 @@ begin
         register_write_in => wb_control_signals_from_mem_wb.register_write,
         write_data_in => write_data_from_wb_stage,
         register_destination_in => register_destination_from_mem_wb,
+        flush_in => flush_pipeline_from_pipeline_flusher,
 
         immediate_out => immediate_from_id_stage,
         rs_data_out => rs_data_from_id_stage,
@@ -206,7 +210,7 @@ begin
     
     process (mem_control_signals_from_ex_mem)
     begin
-        if mem_control_signals_from_ex_mem.memory_write = '1' then
+        if mem_control_signals_from_ex_mem.memory_write = '1' and not flush_pipeline_from_pipeline_flusher then
             dmem_write_enable <= '1';
         else
             dmem_write_enable <= '0';
@@ -250,6 +254,13 @@ begin
         memory_to_register_in => wb_control_signals_from_mem_wb.memory_to_register,
 
         write_data_out => write_data_from_wb_stage
+    );
+
+    pipeline_flusher: entity work.pipeline_flusher
+    port map(
+        branch_in => pc_source_from_mem_stage,
+        
+        flush_out => flush_pipeline_from_pipeline_flusher
     );
 
 end behavioral;
