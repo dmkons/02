@@ -54,7 +54,7 @@ begin
                 end if;
 
             when FUNCTION_PASSTHROUGH =>
-                result_out <= x_in;
+                result_out <= y_in;
 
             when others =>
                 null;
