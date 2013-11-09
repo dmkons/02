@@ -9,6 +9,7 @@ all:
 	ghdl -a flip_flop.vhd
 	ghdl -a control_unit.vhd
 	ghdl -a alu.vhd
+	ghdl -a hazard_detector.vhd
 	ghdl -a forwarding_unit.vhd
 	ghdl -a if_stage.vhd
 	ghdl -a id_stage.vhd
