@@ -4,9 +4,12 @@ all:
 	ghdl -a opcodes.vhd
 	ghdl -a memory.vhd
 	ghdl -a register_file.vhd
+	ghdl -a mux2.vhd
+	ghdl -a mux3.vhd
 	ghdl -a flip_flop.vhd
 	ghdl -a control_unit.vhd
 	ghdl -a alu.vhd
+	ghdl -a forwarding_unit.vhd
 	ghdl -a if_stage.vhd
 	ghdl -a id_stage.vhd
 	ghdl -a ex_stage.vhd

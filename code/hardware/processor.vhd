@@ -37,8 +37,6 @@ architecture behavioral of processor is
 
     -- signals from id_stage
     signal immediate_from_id_stage : std_logic_vector(DDATA_BUS-1 downto 0);
-    signal instruction_20_downto_16_from_id_stage : std_logic_vector(20 downto 16);
-    signal instruction_15_downto_11_from_id_stage : std_logic_vector(15 downto 11);
     signal rs_data_from_id_stage : std_logic_vector(DDATA_BUS-1 downto 0);
     signal rt_data_from_id_stage : std_logic_vector(DDATA_BUS-1 downto 0);
     signal ex_control_signals_from_id_stage : ex_control_signals;
@@ -49,8 +47,7 @@ architecture behavioral of processor is
     -- signals from id_ex
     signal pc_from_id_ex : std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
     signal immediate_from_id_ex : std_logic_vector(DDATA_BUS-1 downto 0);
-    signal instruction_20_downto_16_from_id_ex : std_logic_vector(20 downto 16);
-    signal instruction_15_downto_11_from_id_ex : std_logic_vector(15 downto 11);
+    signal instruction_from_id_ex : std_logic_vector(IDATA_BUS-1 downto 0);
     signal rs_data_from_id_ex : std_logic_vector(DDATA_BUS-1 downto 0);
     signal rt_data_from_id_ex : std_logic_vector(DDATA_BUS-1 downto 0);
     signal ex_control_signals_from_id_ex : ex_control_signals;
@@ -133,8 +130,6 @@ begin
         register_destination_in => register_destination_from_mem_wb,
 
         immediate_out => immediate_from_id_stage,
-        instruction_20_downto_16_out => instruction_20_downto_16_from_id_stage,
-        instruction_15_downto_11_out => instruction_15_downto_11_from_id_stage,
         rs_data_out => rs_data_from_id_stage,
         rt_data_out => rt_data_from_id_stage,
         ex_control_signals_out => ex_control_signals_from_id_stage,
@@ -149,8 +144,7 @@ begin
         halt => processor_enable,
         pc_in => pc_from_if_id,
         immediate_in => immediate_from_id_stage,
-        instruction_20_downto_16_in => instruction_20_downto_16_from_id_stage,
-        instruction_15_downto_11_in => instruction_15_downto_11_from_id_stage,
+        instruction_in => instruction_from_if_id,
         rs_data_in => rs_data_from_id_stage,
         rt_data_in => rt_data_from_id_stage,
         ex_control_signals_in => ex_control_signals_from_id_stage,
@@ -159,8 +153,7 @@ begin
         
         pc_out => pc_from_id_ex,
         immediate_out => immediate_from_id_ex,
-        instruction_20_downto_16_out => instruction_20_downto_16_from_id_ex,
-        instruction_15_downto_11_out => instruction_15_downto_11_from_id_ex,
+        instruction_out => instruction_from_id_ex,
         rs_data_out => rs_data_from_id_ex,
         rt_data_out => rt_data_from_id_ex,
         ex_control_signals_out => ex_control_signals_from_id_ex,
@@ -172,11 +165,16 @@ begin
     port map(
         pc_in => pc_from_id_ex,
         immediate_in => immediate_from_id_ex,
-        instruction_20_downto_16_in => instruction_20_downto_16_from_id_ex,
-        instruction_15_downto_11_in => instruction_15_downto_11_from_id_ex,
+        instruction_in => instruction_from_id_ex,
         rs_data_in => rs_data_from_id_ex,
         rt_data_in => rt_data_from_id_ex,
         ex_control_signals_in => ex_control_signals_from_id_ex,
+        register_destination_from_ex_mem => register_destination_from_ex_mem,
+        register_destination_from_mem_wb => register_destination_from_mem_wb,
+        register_write_from_ex_mem => wb_control_signals_from_ex_mem.register_write,
+        register_write_from_mem_wb => wb_control_signals_from_mem_wb.register_write,
+        alu_result_from_ex_mem => alu_result_from_ex_mem,
+        write_data_from_wb_stage => write_data_from_wb_stage,
 
         pc_out => pc_from_ex_stage,
         alu_result_out => alu_result_from_ex_stage,

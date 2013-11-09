@@ -15,8 +15,6 @@ entity id_stage is
         register_destination_in : in std_logic_vector(RADDR_BUS-1 downto 0);
 
         immediate_out : out std_logic_vector(DDATA_BUS-1 downto 0);
-        instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
-        instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
         rs_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         ex_control_signals_out : out  ex_control_signals;
@@ -60,13 +58,6 @@ begin
         immediate_out <= std_logic_vector(resize(
                              signed(instruction_in(15 downto 0)),
                              immediate_out'length));
-    end process;
-
-
-    process (instruction_in)
-    begin
-        instruction_20_downto_16_out <= instruction_in(20 downto 16);
-        instruction_15_downto_11_out <= instruction_in(15 downto 11);
     end process;
 
 end behavioural;
