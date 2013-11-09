@@ -43,11 +43,11 @@ begin
     port map(
         clk => clk,
         reset => reset,
-        rw => register_write_in,
+        rw => register_write_in and not flush_in,
         rs_addr => get_rs(instruction_in),
         rt_addr => get_rt(instruction_in),
         rd_addr => register_destination_in,
-        write_data => write_data_in and not flush_in,
+        write_data => write_data_in,
 
         rs => rs_data_out,
         rt => rt_data_out

@@ -20,7 +20,7 @@ begin
         if reset = '1' then
             data_out <= (others => '0');
         elsif rising_edge(clk) then
-            if enable = '0' then
+            if enable = '1' then
                 data_out <= data_in;
             end if;
         end if;
@@ -49,7 +49,7 @@ begin
         if reset = '1' then
             data_out <= '0';
         elsif rising_edge(clk) then
-            if enable = '0' then
+            if enable = '1' then
                 data_out <= data_in;
             end if;
         end if;
@@ -77,7 +77,7 @@ begin
         if reset = '1' then
             data_out <= ('0', (others => '0'), '0');
         elsif rising_edge(clk) then
-            if enable = '0' then
+            if enable = '1' then
                 data_out <= data_in;
             end if;
         end if;
@@ -105,7 +105,7 @@ begin
         if reset = '1' then
             data_out <= (others => '0');
         elsif rising_edge(clk) then
-            if enable = '0' then
+            if enable = '1' then
                 data_out <= data_in;
             end if;
         end if;
@@ -133,7 +133,7 @@ begin
         if reset = '1' then
             data_out <= (others => '0');
         elsif rising_edge(clk) then
-            if enable = '0' then
+            if enable = '1' then
                 data_out <= data_in;
             end if;
         end if;

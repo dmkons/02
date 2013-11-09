@@ -208,9 +208,9 @@ begin
         wb_control_signals_out => wb_control_signals_from_ex_mem
     );
     
-    process (mem_control_signals_from_ex_mem)
+    process (mem_control_signals_from_ex_mem, flush_pipeline_from_pipeline_flusher)
     begin
-        if mem_control_signals_from_ex_mem.memory_write = '1' and not flush_pipeline_from_pipeline_flusher then
+        if mem_control_signals_from_ex_mem.memory_write = '1' and flush_pipeline_from_pipeline_flusher =  '0' then
             dmem_write_enable <= '1';
         else
             dmem_write_enable <= '0';
@@ -258,6 +258,8 @@ begin
 
     pipeline_flusher: entity work.pipeline_flusher
     port map(
+        reset => reset,
+        clk => clk,
         branch_in => pc_source_from_mem_stage,
         
         flush_out => flush_pipeline_from_pipeline_flusher
