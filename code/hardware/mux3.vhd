@@ -28,7 +28,7 @@ begin
             when "10" =>
                 data_out <= c_in;
             when others =>
-                data_out <= "X";
+                data_out <= (others => 'X');
         end case;
     end process;
 

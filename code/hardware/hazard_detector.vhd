@@ -16,7 +16,8 @@ end hazard_detector;
 
 architecture behavioural of hazard_detector is
 begin
-    process(register_address_in, register_write_execute_in, register_write_memory_in)
+    process(register_address_in, register_write_execute_in, register_write_memory_in,
+        register_destination_execute_in, register_destination_memory_in)
     begin
         -- default
         hazard_out <= "00";
