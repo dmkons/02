@@ -18,38 +18,47 @@ end alu;
 architecture behavioural of alu is
 begin
 
-    case func is
-        when FUNCTION_ADD =>
-            result_out <= x + y;
+    process(function_in)
+        variable result_readable : signed(DDATA_BUS-1 downto 0);
+    begin
 
-        when FUNCTION_AND =>
-            result_out <= x and y;
+        -- set defaults
+        result_out <= (others => '0');
+        zero_out <= '0';
 
-        when FUNCTION_OR =>
-            result_out <= x oresult_out y;
+        case function_in is
+            when FUNCTION_ADD =>
+                result_out <= x_in + y_in;
 
-        when FUNCTION_SLT =>
-            if x < y then
-                result_out <= "00000000000000000000000000000001";
-            else
-                result_out <= "00000000000000000000000000000000";
-            end if;
+            when FUNCTION_AND =>
+                result_out <= x_in and y_in;
+
+            when FUNCTION_OR =>
+                result_out <= x_in or y_in;
+
+            when FUNCTION_SLT =>
+                if x_in < y_in then
+                    result_out <= "00000000000000000000000000000001";
+                else
+                    result_out <= "00000000000000000000000000000000";
+                end if;
 
 
-        when FUNCTION_SUB =>
-            r_readable := x - y;
-            result_out <= r_readable;
-            if (r_readable="00000000000000000000000000000000") then
-                flags.zero <= '1';
-            else
-                flags.zero <= '0';
-            end if;
+            when FUNCTION_SUB =>
+                result_readable := x_in - y_in;
+                result_out <= result_readable;
+                if (result_readable="00000000000000000000000000000000") then
+                    zero_out <= '1';
+                else
+                    zero_out <= '0';
+                end if;
 
-        when FUNCTION_PASSTHROUGH =>
-            result_out <= x;
+            when FUNCTION_PASSTHROUGH =>
+                result_out <= x_in;
 
-        when others =>
-            null;
-    end case;
+            when others =>
+                null;
+        end case;
+    end process;
 
 end behavioural;
