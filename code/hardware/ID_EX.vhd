@@ -15,8 +15,7 @@ entity ID_EX is
         halt : in std_logic;
         pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         immediate_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        instruction_20_downto_16_in : in std_logic_vector(20 downto 16);
-        instruction_15_downto_11_in : in std_logic_vector(15 downto 11);
+        instruction_in : in std_logic_vector(IDATA_BUS-1 downto 0);
         rs_data_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         rt_data_in : in std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         ex_control_signals_in : in ex_control_signals;
@@ -25,8 +24,7 @@ entity ID_EX is
         
         pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         immediate_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
-        instruction_20_downto_16_out : out std_logic_vector(20 downto 16);
-        instruction_15_downto_11_out : out std_logic_vector(15 downto 11);
+        instruction_out : out std_logic_vector(IDATA_BUS-1 downto 0);
         rs_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         rt_data_out : out std_logic_vector(DMEM_DATA_BUS-1 downto 0);
         ex_control_signals_out : out ex_control_signals;
@@ -58,24 +56,14 @@ begin
         data_out => immediate_out
     );
 
-    instruction_20_downto_16_register: entity work.flip_flop
-    generic map(N => 5)
+    instruction_register: entity work.flip_flop
+    generic map(N => IDATA_BUS)
     port map(
         clk => clk,
         reset => reset,
         enable => halt,
-        data_in => instruction_20_downto_16_in,
-        data_out => instruction_20_downto_16_out
-    );
-
-    instruction_15_downto_11_register: entity work.flip_flop
-    generic map(N => 5)
-    port map(
-        clk => clk,
-        reset => reset,
-        enable => halt,
-        data_in => instruction_15_downto_11_in,
-        data_out => instruction_15_downto_11_out
+        data_in => instruction_in,
+        data_out => instruction_out
     );
 
     rs_data_register: entity work.flip_flop
