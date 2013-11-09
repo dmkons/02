@@ -18,7 +18,7 @@ end alu;
 architecture behavioural of alu is
 begin
 
-    process(function_in)
+    process(function_in, x_in, y_in)
         variable result_readable : signed(DDATA_BUS-1 downto 0);
     begin
 
