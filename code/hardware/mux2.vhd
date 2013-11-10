@@ -20,9 +20,9 @@ begin
     process(a_in, b_in, select_in)
     begin
         if select_in = '1' then
-            data_out <= a_in;
-        else
             data_out <= b_in;
+        else
+            data_out <= a_in;
         end if;
     end process;
 

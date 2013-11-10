@@ -13,6 +13,7 @@ entity id_stage is
         register_write_in : in std_logic;
         write_data_in : in std_logic_vector(DDATA_BUS-1 downto 0);
         register_destination_in : in std_logic_vector(RADDR_BUS-1 downto 0);
+        flush_in : in std_logic;
 
         immediate_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         rs_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
@@ -42,7 +43,7 @@ begin
     port map(
         clk => clk,
         reset => reset,
-        rw => register_write_in,
+        rw => register_write_in and not flush_in,
         rs_addr => get_rs(instruction_in),
         rt_addr => get_rt(instruction_in),
         rd_addr => register_destination_in,

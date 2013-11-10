@@ -9,6 +9,7 @@ entity if_stage is
         clk : in std_logic;
         reset : in std_logic;
         processor_enable : in std_logic;
+        flush_in : in std_logic;
 
         pc_source_in : in std_logic;
         pc_in : in std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
@@ -32,7 +33,7 @@ begin
     )port map(
         clk => clk,
         reset => reset,
-        enable => processor_enable,
+        enable => processor_enable and not flush_in,
         data_in => new_pc_in,
         data_out => new_pc_out
     );
