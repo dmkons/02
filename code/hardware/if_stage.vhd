@@ -41,7 +41,7 @@ begin
     process (pc_source_in, pc_incremented, pc_in)
     begin
         if pc_source_in = '1' then
-            new_pc_in <= pc_in(MEM_ADDR_COUNT-1 downto 0);
+            new_pc_in <= pc_in;
         else 
             new_pc_in <= pc_incremented;
         end if;
