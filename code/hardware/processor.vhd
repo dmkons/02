@@ -97,7 +97,6 @@ begin
         clk => clk,
         reset => reset,
         processor_enable => processor_enable,
-        flush_in => flush_pipeline_from_pipeline_flusher,
         pc_source_in => pc_source_from_mem_stage,
         pc_in => pc_from_ex_mem,
 
