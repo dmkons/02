@@ -34,6 +34,8 @@ begin
             counter_in <= "11";
         elsif counter_out/="00" then
             counter_in <= std_logic_vector(unsigned(counter_out) - 1);
+        else
+            counter_in <= "00";
         end if;
         if counter_out="00" then
             flush_out <= '0';
