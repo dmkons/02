@@ -23,6 +23,7 @@ entity ex_stage is
 
         pc_out : out std_logic_vector(MEM_ADDR_COUNT-1 downto 0);
         alu_result_out : out std_logic_vector(DDATA_BUS-1 downto 0);
+        rt_data_out : out std_logic_vector(DDATA_BUS-1 downto 0);
         alu_zero_out : out std_logic;
         register_destination_out : out std_logic_vector(4 downto 0)
     );
@@ -65,8 +66,8 @@ begin
     generic map(N => DDATA_BUS)
     port map(
         a_in => rs_data_in,
-        b_in => alu_result_from_ex_mem,
-        c_in => write_data_from_wb_stage,
+        b_in => write_data_from_wb_stage,
+        c_in => alu_result_from_ex_mem,
         select_in => forward_rs_out,
         data_out => alu_x_in
     );
@@ -75,8 +76,8 @@ begin
     generic map(N => DDATA_BUS)
     port map(
         a_in => rt_data_in,
-        b_in => alu_result_from_ex_mem,
-        c_in => write_data_from_wb_stage,
+        b_in => write_data_from_wb_stage,
+        c_in => alu_result_from_ex_mem,
         select_in => forward_rt_out,
         data_out => alu_y_forwarding_mux_out
     );
@@ -103,6 +104,11 @@ begin
     process (alu_result_signed_out)
     begin
         alu_result_out <= std_logic_vector(alu_result_signed_out);
+    end process;
+    
+    process (alu_y_forwarding_mux_out)
+    begin
+        rt_data_out <= alu_y_forwarding_mux_out;
     end process;
 
 

@@ -61,6 +61,7 @@ architecture behavioral of processor is
     signal alu_zero_from_ex_stage : std_logic;
     signal instruction_20_downto_16_from_ex_stage : std_logic_vector(20 downto 16);
     signal register_destination_from_ex_stage : std_logic_vector(4 downto 0);
+    signal rt_data_from_ex_stage : std_logic_vector(DDATA_BUS-1 downto 0);
 
 
     -- signals from ex_mem
@@ -182,6 +183,7 @@ begin
         pc_out => pc_from_ex_stage,
         alu_result_out => alu_result_from_ex_stage,
         alu_zero_out => alu_zero_from_ex_stage,
+        rt_data_out => rt_data_from_ex_stage,
         register_destination_out => register_destination_from_ex_stage
     );
 
@@ -194,7 +196,7 @@ begin
         alu_result_in => alu_result_from_ex_stage,
         alu_zero_in => alu_zero_from_ex_stage,
         register_destination_in => register_destination_from_ex_stage,
-        rt_data_in => rt_data_from_id_ex,
+        rt_data_in => rt_data_from_ex_stage,
         mem_control_signals_in => mem_control_signals_from_id_ex,
         wb_control_signals_in => wb_control_signals_from_id_ex,
         
@@ -219,7 +221,8 @@ begin
     mem_stage: entity work.mem_stage
     port map(
         alu_zero_in => alu_zero_from_ex_mem,
-        branch_in => mem_control_signals_from_ex_mem.branch,
+        branch_in => mem_control_signals_from_ex_mem.branch and not flush_pipeline_from_pipeline_flusher,
+        jump_in => mem_control_signals_from_ex_mem.jump and not flush_pipeline_from_pipeline_flusher,
 
         pc_source_out => pc_source_from_mem_stage
     );
@@ -227,6 +230,7 @@ begin
     process (alu_result_from_ex_mem)
     begin
         dmem_address <= alu_result_from_ex_mem(MEM_ADDR_COUNT-1 downto 0);
+        dmem_address_wr <= alu_result_from_ex_mem(MEM_ADDR_COUNT-1 downto 0);
     end process;
     
 

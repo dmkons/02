@@ -9,8 +9,7 @@ entity control_unit is
         instruction_function : in std_logic_vector(FUNCTION_SIZE-1 downto 0);
         ex_control_signals : out ex_control_signals;
         mem_control_signals : out mem_control_signals;
-        wb_control_signals : out wb_control_signals;
-        jump : out std_logic
+        wb_control_signals : out wb_control_signals
     );
 end control_unit;
 
@@ -26,6 +25,7 @@ begin
         ex_control_signals.register_destination <= '0';
         mem_control_signals.branch <= '0';
         mem_control_signals.memory_write <= '0';
+        mem_control_signals.jump <= '0';
         wb_control_signals.memory_to_register <= '0';
         wb_control_signals.register_write <= '0';
         
@@ -51,7 +51,7 @@ begin
                 mem_control_signals.memory_write <= '1';
                 
             when OPCODE_J =>
-                jump <= '1';
+                mem_control_signals.jump <= '1';
                 
             when OPCODE_ADDI =>
                 ex_control_signals.alu_source <= '1';
