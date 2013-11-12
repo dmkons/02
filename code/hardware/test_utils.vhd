@@ -6,9 +6,9 @@ package test_utils is
 
     function to_string(sv: signed) return string;
     function to_string(sv: unsigned) return string;
-    procedure test(tag : string; name : string; expected : signed; var : signed);
-    procedure test(tag : string; name : string; expected : std_logic; var : std_logic);
-    procedure test(tag : string; name : string; expected : std_logic_vector; var : std_logic_vector);
+    procedure test(tag : string; name : string; var : signed; expected : signed);
+    procedure test(tag : string; name : string; var : std_logic; expected : std_logic);
+    procedure test(tag : string; name : string; var : std_logic_vector; expected : std_logic_vector);
    
 end;
 

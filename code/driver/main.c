@@ -5,10 +5,10 @@
 
 // IMPORTANT: These defines/includes depend on the name of your peripheral!
 //            You may need to update them...
-#include "tdt4255_exercise.h"
-#define WR TDT4255_EXERCISE_mWriteReg
-#define RR TDT4255_EXERCISE_mReadReg
-#define BASE XPAR_TDT4255_EXERCISE_0_BASEADDR
+#include "dmkons.h"
+#define WR DMKONS_mWriteReg
+#define RR DMKONS_mReadReg
+#define BASE XPAR_DMKONS_0_BASEADDR
 // Name dependent defines/includes ends here
 
 #define CMD_NONE 0
@@ -32,6 +32,8 @@
 
 void wait(){
   while(RR(BASE, REG_STATUS) != STATUS_DONE){
+    xil_printf("wait... status: %d\r\n", RR(BASE, REG_STATUS));
+    xil_printf("wait...   data: %d\r\n", RR(BASE, REG_DATA_OUT));
   }
 }
 
@@ -49,7 +51,8 @@ void writeData(int command, Xuint32 address, Xuint32 data){
 }
 
 Xuint32 readData(int command, Xuint32 address){
- 
+  
+  xil_printf("readData(command: %d, address: %d, number: %d);\r\n", command, address, 42);
   WR(BASE, REG_ADDR_IN, address);
   
   // the command triggers the FPGA, so we write this value last

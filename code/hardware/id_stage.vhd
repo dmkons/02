@@ -26,6 +26,9 @@ end id_stage;
 
 
 architecture behavioural of id_stage is
+    signal register_write_in_and_not_flush_in : std_logic;
+    signal gotten_rs_addr : std_logic_vector(4 downto 0);
+    signal gotten_rt_addr : std_logic_vector(4 downto 0);
 begin
 
     control_unit: entity work.control_unit
@@ -38,14 +41,24 @@ begin
         wb_control_signals => wb_control_signals_out
     );
 
+    process (register_write_in, flush_in)
+    begin
+        register_write_in_and_not_flush_in <= register_write_in and not flush_in;
+    end process;
+    
+    process (instruction_in)
+    begin
+        gotten_rs_addr <= get_rs(instruction_in);
+        gotten_rt_addr <= get_rt(instruction_in);
+    end process;
 
     register_file: entity work.register_file
     port map(
         clk => clk,
         reset => reset,
-        rw => register_write_in and not flush_in,
-        rs_addr => get_rs(instruction_in),
-        rt_addr => get_rt(instruction_in),
+        rw => register_write_in_and_not_flush_in,
+        rs_addr => gotten_rs_addr,
+        rt_addr => gotten_rt_addr,
         rd_addr => register_destination_in,
         write_data => write_data_in,
 

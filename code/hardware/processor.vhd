@@ -91,6 +91,10 @@ architecture behavioral of processor is
     -- signals from pipeline flusher
     signal flush_pipeline_from_pipeline_flusher : std_logic;
     
+    -- signals that were hacked in because XPS is finicky
+    signal mem_control_signals_from_ex_mem_branch_and_not_flush_pipeline_from_pipeline_flusher : std_logic;
+    signal mem_control_signals_from_ex_mem_jump_and_not_flush_pipeline_from_pipeline_flusher : std_logic;
+    
 begin
 
     if_stage: entity work.if_stage
@@ -217,12 +221,18 @@ begin
             dmem_write_enable <= '0';
         end if;
     end process;
+    
+    process (mem_control_signals_from_ex_mem, flush_pipeline_from_pipeline_flusher)
+    begin
+        mem_control_signals_from_ex_mem_branch_and_not_flush_pipeline_from_pipeline_flusher <= mem_control_signals_from_ex_mem.branch and not flush_pipeline_from_pipeline_flusher;
+        mem_control_signals_from_ex_mem_jump_and_not_flush_pipeline_from_pipeline_flusher <= mem_control_signals_from_ex_mem.jump and not flush_pipeline_from_pipeline_flusher;
+    end process;
 
     mem_stage: entity work.mem_stage
     port map(
         alu_zero_in => alu_zero_from_ex_mem,
-        branch_in => mem_control_signals_from_ex_mem.branch and not flush_pipeline_from_pipeline_flusher,
-        jump_in => mem_control_signals_from_ex_mem.jump and not flush_pipeline_from_pipeline_flusher,
+        branch_in => mem_control_signals_from_ex_mem_branch_and_not_flush_pipeline_from_pipeline_flusher,
+        jump_in => mem_control_signals_from_ex_mem_jump_and_not_flush_pipeline_from_pipeline_flusher,
 
         pc_source_out => pc_source_from_mem_stage
     );
