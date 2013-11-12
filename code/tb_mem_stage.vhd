@@ -12,6 +12,7 @@ ARCHITECTURE behavior OF tb_mem_stage IS
     PORT(
          alu_zero_in : IN  std_logic;
          branch_in : IN  std_logic;
+         jump_in : IN std_logic;
          pc_source_out : OUT  std_logic
         );
     END COMPONENT;
@@ -20,6 +21,7 @@ ARCHITECTURE behavior OF tb_mem_stage IS
    --Inputs
    signal alu_zero_in : std_logic := '0';
    signal branch_in : std_logic := '0';
+   signal jump_in : std_logic := '0';
 
  	--Outputs
    signal pc_source_out : std_logic;
@@ -31,6 +33,7 @@ BEGIN
    uut: mem_stage PORT MAP (
           alu_zero_in => alu_zero_in,
           branch_in => branch_in,
+          jump_in => jump_in,
           pc_source_out => pc_source_out
         );
 
@@ -39,23 +42,33 @@ BEGIN
       wait for 100 ns;
       alu_zero_in <= '0';
       branch_in <= '0';
+      jump_in <= '0';
       wait for clk_period;
       test("", "no flags", pc_source_out, '0');
       
       alu_zero_in <= '1';
       branch_in <= '0';
+      jump_in <= '0';
       wait for clk_period;
       test("", "alu zero flag", pc_source_out, '0');
       
       alu_zero_in <= '0';
       branch_in <= '1';
+      jump_in <= '0';
       wait for clk_period;
       test("", "branch flag", pc_source_out, '0');
       
+      alu_zero_in <= '0';
+      branch_in <= '0';
+      jump_in <= '1';
+      wait for clk_period;
+      test("", "jump flag", pc_source_out, '1');
+      
       alu_zero_in <= '1';
       branch_in <= '1';
+      jump_in <= '0';
       wait for clk_period;
-      test("", "alu zero flag and branch flag", pc_source_out, '1'); 
+      test("", "alu zero flag, and branch flag", pc_source_out, '1'); 
 
 
       wait;
